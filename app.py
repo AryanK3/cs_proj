@@ -129,25 +129,19 @@ def product_list():
 @app.route('/download_csv')
 def download_csv():
     if 'user_id' not in session:
-        abort(403)  # Forbidden
+        abort(403)  
 
     user_id = session['user_id']
-
-    # Retrieve all products for the user from the database
     cursor = mysql.cursor(dictionary=True)
     cursor.execute("SELECT name, description, time FROM products WHERE user_id = %s", (user_id,))
     products = cursor.fetchall()
     cursor.close()
 
-    # Create a CSV file in memory
     csv_data = []
     csv_data.append(','.join(['Product Name', 'Description', 'Time']))
-
-    # Write product data
     for product in products:
         csv_data.append(','.join([product['name'], product['description'], str(product['time'])]))
 
-    # Create a response with the CSV data
     response = make_response('\n'.join(csv_data))
     response.headers["Content-Disposition"] = "attachment; filename=products.csv"
     response.headers["Content-type"] = "text/csv"
