@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+</head>
+<body>
+    <h2>Product List</h2>
+    {% if products %}
+        <ul>
+            {% for product in products %}
+                <li>
+                    {{ product.name }} - {{ product.description }}
+                    <img src="data:image/png;base64,{{ product.qrcode }}" alt="QR Code">
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No products available.</p>
+    {% endif %}
+    <p><a href="{{ url_for('download_csv') }}" class="btn btn-primary">Download CSV</a></p>
+    <p><a href="{{ url_for('dashboard') }}">Back to Dashboard</a></p>
+</body>
+</html>
